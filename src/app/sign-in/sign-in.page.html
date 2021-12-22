@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Sign In</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar color="primary">
+            <ion-title size="large">Sign In</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-padding">
+            <ion-col size-xs="0" size-md="3"></ion-col>
+            <ion-col class="ion-no-padding">
+                <ion-card class="ion-no-padding">
+                    <ion-card-header>
+                        <ion-card-subtitle>Notes</ion-card-subtitle>
+                        <ion-card-title>Sign In</ion-card-title>
+                    </ion-card-header>
+
+                    <ion-card-content>
+                        <div [(formGroup)]="credentialsForm">
+
+                            <ion-item>
+                                <ion-label position="stacked">Email</ion-label>
+                                <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="cf.email.errors && submitted " color="danger">
+                                <div *ngIf="cf.email.errors.required">Email is required</div>
+                                <div *ngIf="cf.email.errors.pattern">Must be Cognizant Email</div>
+                                <div *ngIf="cf.email.errors.maxlength">Not more than 100 characters.</div>
+                            </ion-text>
+
+                            <ion-item>
+                                <ion-label position="stacked">Password</ion-label>
+                                <ion-input formControlName="password" type="password" placeholder="********"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="cf.password.errors && submitted " color="danger">
+                                <div *ngIf="cf.password.errors.minlength">Must be more than 8 characters.</div>
+                                <div *ngIf="cf.password.errors.maxlength">Not more than 64 characters.</div>
+                            </ion-text>
+                        </div>
+
+                        <ion-text color="danger" *ngIf="errorMessage">
+                            {{errorMessage}}
+                        </ion-text>
+                        <ion-text *ngIf="loading">
+                            Loading...
+                        </ion-text>
+                        <ion-button (click)="signIn()" expand="full" color="primary">Submit</ion-button>
+                        <ion-text>
+                            No Account Yet click <a routerLink="/sign-up">here</a>
+                        </ion-text>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col size-xs="0" size-md="3"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

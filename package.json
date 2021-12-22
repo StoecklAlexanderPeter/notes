@@ -22,6 +22,8 @@
     "@angular/router": "~13.0.0",
     "@ionic/angular": "^6.0.0",
     "firebase": "^9.6.1",
+    "ngx-quill": "^15.0.0",
+    "quill": "^1.3.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"

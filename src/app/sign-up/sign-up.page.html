@@ -1,0 +1,93 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Sign Up</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar color="primary">
+            <ion-title size="large">Sign Up</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-padding">
+            <ion-col class="ion-no-padding">
+                <ion-card class="ion-no-padding">
+                    <ion-card-header>
+                        <ion-card-subtitle>Notes</ion-card-subtitle>
+                        <ion-card-title>Sign Up</ion-card-title>
+                    </ion-card-header>
+
+                    <ion-card-content>
+                        <div [(formGroup)]="userForm">
+                            <ion-item>
+                                <ion-label position="stacked">Cognizant ID</ion-label>
+                                <ion-input formControlName="cognizantID" type="number" placeholder="Cognizant ID"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="uf.cognizantID.errors && submitted " color="danger">
+                                <div *ngIf="uf.cognizantID.errors.required">Cognizant ID is required</div>
+                                <div *ngIf="uf.cognizantID.errors.maxlength">Must be 6 characters</div>
+                                <div *ngIf="uf.cognizantID.errors.minlength">Must be 6 characters</div>
+                            </ion-text>
+
+                            <ion-item>
+                                <ion-label position="stacked">Firstname</ion-label>
+                                <ion-input formControlName="firstname" type="text" placeholder="Firstname"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="uf.firstname.errors && submitted " color="danger">
+                                <div *ngIf="uf.firstname.errors.required">Firstname is required</div>
+                                <div *ngIf="uf.firstname.errors.maxlength">Not more than 24 characters.</div>
+                            </ion-text>
+
+                            <ion-item>
+                                <ion-label position="stacked">Lastname</ion-label>
+                                <ion-input formControlName="lastname" type="text" placeholder="Lastname"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="uf.lastname.errors && submitted " color="danger">
+                                <div *ngIf="uf.lastname.errors.required">Lastname is required</div>
+                                <div *ngIf="uf.lastname.errors.maxlength">Not more than 24 characters.</div>
+                            </ion-text>
+
+                            <ion-item>
+                                <ion-label position="stacked">Email</ion-label>
+                                <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="uf.email.errors && submitted " color="danger">
+                                <div *ngIf="uf.email.errors.required">Email is required</div>
+                                <div *ngIf="uf.email.errors.pattern">Must be Cognizant Email</div>
+                                <div *ngIf="uf.email.errors.maxlength">Not more than 100 characters.</div>
+                            </ion-text>
+
+                            <ion-item>
+                                <ion-label position="stacked">Password</ion-label>
+                                <ion-input formControlName="password" type="password" placeholder="********"></ion-input>
+                            </ion-item>
+                            <ion-text *ngIf="uf.password.errors && submitted " color="danger">
+                                <div *ngIf="uf.password.errors.minlength">Must be more than 8 characters.</div>
+                                <div *ngIf="uf.password.errors.maxlength">Not more than 64 characters.</div>
+                            </ion-text>
+
+                            <ion-text *ngIf="loading">
+                                Loading...
+                            </ion-text>
+
+                            <ion-text *ngIf="message">
+                                {{message}}
+                            </ion-text>
+
+                            <ion-text color="primary" routerLink="/login">
+                                Already registered?
+                            </ion-text>
+                            <ion-button (click)="signUp()" expand="full" color="primary">Submit</ion-button>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
