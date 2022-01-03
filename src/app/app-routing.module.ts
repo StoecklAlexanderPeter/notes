@@ -1,10 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['sign-in']);
+const redirectAuthorizedToHome = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [AngularFireAuthGuard], 
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: '',
@@ -12,16 +18,22 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'note',
-    loadChildren: () => import('./note/note.module').then( m => m.NotePageModule)
+    path: 'note/:id',
+    loadChildren: () => import('./note/note.module').then( m => m.NotePageModule),
+    canActivate: [AngularFireAuthGuard], 
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'sign-in',
-    loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule)
+    loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule),
+    canActivate: [AngularFireAuthGuard], 
+    data: { authGuardPipe: redirectAuthorizedToHome }
   },
   {
     path: 'sign-up',
-    loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
+    loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule),
+    canActivate: [AngularFireAuthGuard], 
+    data: { authGuardPipe: redirectAuthorizedToHome }
   },
   {
     path: 'password-forgotten',

@@ -31,7 +31,7 @@ export class NoteService {
       map(notes => 
         notes.map(note => (
           {
-            uid: note.key,
+            key: note.key,
             ...note.payload.val() 
           }
         ))
@@ -41,7 +41,7 @@ export class NoteService {
 
   public update(note: Note) {
     return new Promise((res, rej) => {
-      this.db.list("/notes/").set(note.uid, note)
+      this.db.list("/notes/").set(note.key, note)
         .then(() => {
           res("Successfully updated note " + note.title)
         }).catch((err) => {

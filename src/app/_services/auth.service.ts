@@ -14,7 +14,8 @@ export class AuthService {
     return new Promise((res, rej) => {
       this.auth.signInWithEmailAndPassword(email, password)
         .then((user) => {
-          if (user.user.emailVerified) {
+          res(user.user.email + " sucessfully logged in")
+          /*if (user.user.emailVerified) {
             res(user.user.email + " sucessfully logged in")
           } else {
             this.signOut()
@@ -24,7 +25,7 @@ export class AuthService {
                 console.error(err);
                 rej(err.message)
               })
-          }
+          }*/
         }).catch((err) => {
           rej(err.message);
         })
@@ -39,6 +40,18 @@ export class AuthService {
           res(user.user.uid);
         }).catch((err) => {
           rej(err);
+        })
+    })
+  }
+
+  public resetPassword(email: string) {
+    return new Promise((res, rej) => {
+      this.auth.sendPasswordResetEmail(email)
+        .then(() => {
+          res("Password Reset E-Mail sent to " + email);
+        }).catch((err) => {
+          console.error(err);
+          rej(err.message);
         })
     })
   }

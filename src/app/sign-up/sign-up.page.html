@@ -26,16 +26,6 @@
                     <ion-card-content>
                         <div [(formGroup)]="userForm">
                             <ion-item>
-                                <ion-label position="stacked">Cognizant ID</ion-label>
-                                <ion-input formControlName="cognizantID" type="number" placeholder="Cognizant ID"></ion-input>
-                            </ion-item>
-                            <ion-text *ngIf="uf.cognizantID.errors && submitted " color="danger">
-                                <div *ngIf="uf.cognizantID.errors.required">Cognizant ID is required</div>
-                                <div *ngIf="uf.cognizantID.errors.maxlength">Must be 6 characters</div>
-                                <div *ngIf="uf.cognizantID.errors.minlength">Must be 6 characters</div>
-                            </ion-text>
-
-                            <ion-item>
                                 <ion-label position="stacked">Firstname</ion-label>
                                 <ion-input formControlName="firstname" type="text" placeholder="Firstname"></ion-input>
                             </ion-item>

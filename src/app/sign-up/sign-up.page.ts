@@ -104,10 +104,10 @@ export class SignUpPage implements OnInit {
             await alert.present();
           }
         ).catch((err) => {
-          this.message = "2 "+ err;
+          this.message = err;
         })
       }).catch((err) => {
-        this.message = "1 "+ err;
+        this.message = err;
       })
       this.loading = false;
   }

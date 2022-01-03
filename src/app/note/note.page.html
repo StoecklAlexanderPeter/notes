@@ -1,15 +1,42 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-title size="large">{{note.title}}</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="home"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="allowExecute">
+            <ion-button>{{formatDate(note.modified)}}</ion-button>
+            <ion-button color="danger" (click)="delete()">
+                <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="success" (click)="invite()">
+                <ion-icon name="share-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title>{{note.title}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
         <ion-toolbar>
-            <ion-title size="large">{{note.title}}</ion-title>
+            <ion-buttons slot="start">
+                <ion-back-button></ion-back-button>
+            </ion-buttons>
+            <ion-buttons slot="end" *ngIf="allowExecute">
+                <ion-button color="danger" fill="solid" (click)="delete()">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="success" fill="solid" (click)="invite()">
+                    <ion-icon name="share-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+
+            <ion-title>{{note.title}}</ion-title>
         </ion-toolbar>
     </ion-header>
 
-    <quill-editor [(ngModel)]="note.content" (onEditorChanged)="updateNote()" format="json"></quill-editor>
+
+    <quill-editor [(ngModel)]="note.content" (onEditorChanged)="updateNote()" format="json" *ngIf="allowWrite"></quill-editor>
+    <quill-editor [(ngModel)]="note.content" (onEditorChanged)="updateNote()" format="json" readOnly="true" *ngIf="!allowWrite && allowRead"></quill-editor>
 </ion-content>

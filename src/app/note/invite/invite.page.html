@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button fill="outline" color="danger" (click)="invite()">Close</ion-button>
+        </ion-buttons>
+
+        <ion-title>Invite User</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-grid>
+        <ion-row *ngIf="!userSelected">
+            <ion-col>
+                <ion-item [formGroup]="emailForm">
+                    <ion-label>Enter Email</ion-label>
+                    <ion-input formControlName="email" placeholder="email@email.com"></ion-input>
+                </ion-item>
+                <ion-text *ngIf="emailForm.controls.email.errors && emailSubmitted " color="danger">
+                    <div *ngIf="emailForm.controls.email.errors.required">Email is required</div>
+                    <div *ngIf="emailForm.controls.email.errors.pattern">Must be Cognizant Email</div>
+                    <div *ngIf="emailForm.controls.email.errors.maxlength">Not more than 100 characters.</div>
+                </ion-text>
+                <ion-button (click)="getUserWithEmail()" color="success">Submit</ion-button>
+            </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="userSelected && !permissionsSelected">
+            <ion-col [formGroup]="permissionForm">
+                <ion-item>
+                    <ion-label>Read</ion-label>
+                    <ion-checkbox formControlName="read"></ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Write</ion-label>
+                    <ion-checkbox formControlName="write"></ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Execute</ion-label>
+                    <ion-checkbox formControlName="execute"></ion-checkbox>
+                </ion-item>
+                <ion-button (click)="create()" color="success">Give Permission</ion-button>
+            </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="userSelected && permissionsSelected">
+            <ion-col>
+                <ion-text>
+                    Added Permission for User
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

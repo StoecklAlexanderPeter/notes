@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
 import { Note } from '../_classes/note';
 import { AuthService } from '../_services/auth.service';
 import { NoteService } from '../_services/note.service';
+import { PermissionService } from '../_services/permission.service';
 
 @Component({
   selector: 'app-home',
@@ -14,13 +16,25 @@ export class HomePage {
   private currentUserUid;
 
   public myNotes;
+  public mySharedNotes;
 
-  constructor(public alertController: AlertController, private noteService: NoteService, private authService: AuthService) {
+  constructor(public alertController: AlertController, private noteService: NoteService, private permissionService: PermissionService, private authService: AuthService) {
     this.authService.currentUser.then((user) => {
       if (user) {
+        console.log(user);
         this.currentUserUid = user.uid;
         this.noteService.getNotesFromUser(user.uid).subscribe(notes => {
           this.myNotes = notes;
+        })
+
+        this.mySharedNotes = [];
+        this.permissionService.getPermissionsFromUser(user.uid).subscribe(ps => {
+          ps.forEach(p => {
+            this.noteService.get(p.noteid).pipe(take(1)).subscribe(n => {
+              n.key = p.noteid;
+              this.mySharedNotes.push(n);
+            })
+          })
         })
       }
     })
@@ -49,16 +63,18 @@ export class HomePage {
       subHeader: 'Notes',
       message: "",
       inputs: [{name: "title", type: "text"}],
-      buttons: ["Submit"]
+      buttons: [
+        {
+            text: 'OK',
+            handler: data => {
+                console.log(JSON.stringify(data)); //to see the object
+                this.create(data.title);
+            }
+        }
+      ]
     });
 
     await alert.present();
-    const { data } = await alert.onDidDismiss();
-
-    if(data.title) {
-      this.create(data.title);
-    }
-
   }
 
   async alert(header, message) {
@@ -76,7 +92,7 @@ export class HomePage {
     const alert = await this.alertController.create({
       header: "Confirm Deletion",
       subHeader: 'Notes',
-      message: "Confirm your deletion of Note" + note.title,
+      message: "Confirm your deletion of Note: " + note.title,
       buttons: [
         {text: "Cancel"}, 
         {text: "Delete", handler: () => {
@@ -91,11 +107,10 @@ export class HomePage {
     });
 
     await alert.present();
-    const { data } = await alert.onDidDismiss();
+  }
 
-    if(data.title) {
-      this.create(data.title);
-    }
-
+  public formatDate(dateString) {
+    let date = new Date(dateString);
+    return date.getDate() + "." + (date.getMonth()+1) + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getSeconds();
   }
 }
